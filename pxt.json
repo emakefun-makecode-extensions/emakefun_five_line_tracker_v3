@@ -2,6 +2,7 @@
     "name": "five_line_tracker_v3",
     "version": "1.0.0",
     "description": "Extension for Emakefun Five Line Tracker V3",
+    "license": "MIT",
     "dependencies": {
         "core": "*",
         "radio": "*",
