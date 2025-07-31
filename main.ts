@@ -4,23 +4,23 @@ namespace emakefun {
     const kDefaultI2cAddress = 0x50;
 
     /**
-     * Create a new FiveLineTracker instance
+     * Create a new FiveLineTrackerV3 instance
      * @param i2c_address I2C address of the module, default 0x50
-     * @return The new FiveLineTracker object
+     * @return The new FiveLineTrackerV3 object
     */
-    //% block="create five line tracker with I2C address $i2c_address"
+    //% block="create five line tracker V3 with I2C address $i2c_address"
     //% subcategory="FiveLineTrackerV3"
-    //% blockSetVariable=five_line_tracker
+    //% blockSetVariable=five_line_tracker_v3
     //% i2c_address.defl=0x50
     //% weight=100
-    export function createFiveLineTracker(i2c_address: number = kDefaultI2cAddress): FiveLineTracker {
-        return new FiveLineTracker(i2c_address);
+    export function createFiveLineTrackerV3(i2c_address: number = kDefaultI2cAddress): FiveLineTrackerV3 {
+        return new FiveLineTrackerV3(i2c_address);
     }
 
     /**
-     * FiveLineTracker class
+     * FiveLineTrackerV3 class
      */
-    export class FiveLineTracker {
+    export class FiveLineTrackerV3 {
         private static readonly kMemoryAddressDeviceId = 0x00;
         private static readonly kMemoryAddressVersion = 0x01;
         private static readonly kMemoryAddressAnalogValues = 0x10;
@@ -38,20 +38,16 @@ namespace emakefun {
             this.i2c_address = i2c_address;
         }
 
-        i2cRead(register: number, length: number): Buffer {
-            pins.i2cWriteNumber(this.i2c_address, register, NumberFormat.UInt8LE);
-            return pins.i2cReadBuffer(this.i2c_address, length);
-        }
-
         /**
          * Get the device ID
          */
         //% block="$this get the device ID"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% weight=95
         getDeviceId(): number {
-            return this.i2cRead(FiveLineTracker.kMemoryAddressDeviceId, 1).getUint8(0);
+            pins.i2cWriteNumber(this.i2c_address, FiveLineTrackerV3.kMemoryAddressDeviceId, NumberFormat.UInt8LE);
+            return pins.i2cReadNumber(this.i2c_address, NumberFormat.UInt8LE, false);
         }
 
         /**
@@ -59,10 +55,11 @@ namespace emakefun {
          */
         //% block="$this get the firmware version"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% weight=94
         getFirmwareVersion(): number {
-            return this.i2cRead(FiveLineTracker.kMemoryAddressVersion, 1).getUint8(0);
+            pins.i2cWriteNumber(this.i2c_address, FiveLineTrackerV3.kMemoryAddressVersion, NumberFormat.UInt8LE);
+            return pins.i2cReadNumber(this.i2c_address, NumberFormat.UInt8LE, false);
         }
 
         /**
@@ -72,14 +69,14 @@ namespace emakefun {
         */
         //% block="$this set high threshold for sensor $index to $threshold"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% index.min=0
         //% index.max=4
         //% threshold.min=0
         //% threshold.max=1023
         //% weight=90
         setHighThreshold(index: number, threshold: number): void {
-            pins.i2cWriteBuffer(this.i2c_address, Buffer.pack("<BH", [FiveLineTracker.kMemoryAddressHighThresholds + index * 2, threshold]));
+            pins.i2cWriteBuffer(this.i2c_address, Buffer.pack("<BH", [FiveLineTrackerV3.kMemoryAddressHighThresholds + index * 2, threshold]));
         }
 
 
@@ -90,14 +87,14 @@ namespace emakefun {
          */
         //% block="$this set low threshold for sensor $index to $threshold"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% index.min=0
         //% index.max=4
         //% threshold.min=0
         //% threshold.max=1023
         //% weight=89
         setLowThreshold(index: number, threshold: number): void {
-            pins.i2cWriteBuffer(this.i2c_address, Buffer.pack("<BH", [FiveLineTracker.kMemoryAddressLowThresholds + index * 2, threshold]));
+            pins.i2cWriteBuffer(this.i2c_address, Buffer.pack("<BH", [FiveLineTrackerV3.kMemoryAddressLowThresholds + index * 2, threshold]));
 
         }
 
@@ -107,13 +104,13 @@ namespace emakefun {
          */
         //% block="$this get the analog value for channel $index"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% index.min=0
         //% index.max=4
         //% weight=85
         analogValue(index: number): number {
-            const buffer = this.i2cRead(FiveLineTracker.kMemoryAddressAnalogValues + (index * 2), 2);
-            return buffer.getNumber(NumberFormat.UInt16LE, 0);
+            pins.i2cWriteNumber(this.i2c_address, FiveLineTrackerV3.kMemoryAddressAnalogValues + (index * 2), NumberFormat.UInt8LE);
+            return pins.i2cReadNumber(this.i2c_address, NumberFormat.UInt16LE, false);
         }
 
         /**
@@ -122,13 +119,13 @@ namespace emakefun {
          */
         //% block="$this get the digital value for channel $index"
         //% subcategory="FiveLineTrackerV3"
-        //% this.defl=five_line_tracker
+        //% this.defl=five_line_tracker_v3
         //% index.min=0
         //% index.max=4
         //% weight=80
         digitalValue(index: number): number {
-            const byte = this.i2cRead(FiveLineTracker.kMemoryAddressDigitalValues, 1).getUint8(0);
-            return (byte >> index) & 0x01;
+            pins.i2cWriteNumber(this.i2c_address, FiveLineTrackerV3.kMemoryAddressDigitalValues, NumberFormat.UInt8LE);
+            return (pins.i2cReadNumber(this.i2c_address, NumberFormat.UInt8LE, false) >> index) & 0x01;
         }
     }
 }
