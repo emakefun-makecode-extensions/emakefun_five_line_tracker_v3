@@ -1,0 +1,16 @@
+{
+    "emakefun.FiveLineTrackerV3.getDeviceId": "获取设备ID",
+    "emakefun.FiveLineTrackerV3.getFirmwareVersion": "获取固件版本",
+    "emakefun.FiveLineTrackerV3.setHighThreshold": "设置传感器探头的高阈值",
+    "emakefun.FiveLineTrackerV3.setHighThreshold|param|index": "传感器探头编号 (0-4)",
+    "emakefun.FiveLineTrackerV3.setHighThreshold|param|threshold": "高阈值 (0-1023)",
+    "emakefun.FiveLineTrackerV3.setLowThreshold": "设置传感器探头的低阈值",
+    "emakefun.FiveLineTrackerV3.setLowThreshold|param|index": "传感器探头编号 (0-4)",
+    "emakefun.FiveLineTrackerV3.setLowThreshold|param|threshold": "低阈值 (0-1023)",
+    "emakefun.FiveLineTrackerV3.analogValue": "获取传感器探头的模拟值",
+    "emakefun.FiveLineTrackerV3.analogValue|param|index": "传感器探头编号 (0-4)",
+    "emakefun.FiveLineTrackerV3.digitalValue": "获取传感器探头的数字值",
+    "emakefun.FiveLineTrackerV3.digitalValue|param|index": "传感器探头编号 (0-4)",
+    "emakefun.createFiveLineTrackerV3": "创建五路寻迹V3模块实例",
+    "emakefun.createFiveLineTrackerV3|param|i2c_address": "I2C地址 (默认0x50)"
+}
