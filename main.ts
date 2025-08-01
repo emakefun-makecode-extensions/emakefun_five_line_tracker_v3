@@ -63,7 +63,7 @@ namespace emakefun {
         }
 
         /**
-        * Set the high threshold for sensors
+        * Set the high threshold for sensor
         * @param index The sensor index (0-4)
         * @param threshold The threshold value (0-1023)
         */
@@ -102,7 +102,7 @@ namespace emakefun {
          * Read analog value of sensors
          * @param index The sensor index (0-4)
          */
-        //% block="$this get the analog value for channel $index"
+        //% block="$this get the analog value for sensor $index"
         //% subcategory="FiveLineTrackerV3"
         //% this.defl=five_line_tracker_v3
         //% index.min=0
@@ -117,7 +117,7 @@ namespace emakefun {
          * Read digital value of sensors
          * @param index The sensor index (0-4)
          */
-        //% block="$this get the digital value for channel $index"
+        //% block="$this get the digital value for sensor $index"
         //% subcategory="FiveLineTrackerV3"
         //% this.defl=five_line_tracker_v3
         //% index.min=0
